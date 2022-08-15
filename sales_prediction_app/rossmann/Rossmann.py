@@ -193,6 +193,7 @@ class Rossmann (object):
 
                                                                          
     def get_prediction(self, model, original_data, test_data):
+        
         # prediction
         pred = model.predict(test_data)
 
