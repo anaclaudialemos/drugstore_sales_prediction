@@ -18,30 +18,23 @@ def rossmann_prediction():
     if test_json: # there is data
         if isinstance(test_json, dict): # if unique example
             test_df = pd.DataFrame(test_json, index=[0])
-            print('1')
         else: # if multiple examples
             test_df = pd.DataFrame(test_json, columns=test_json[0].keys())
-            print('2')
 
         # instantiate Rossmann Class
         pipeline = Rossmann()
-        print('3')
 
         # data cleaning
         df1 = pipeline.data_cleaning(test_df)
-        print('4')
 
         # feature engineering
         df2 = pipeline.feature_engineering(df1)
-        print('5')
 
         # data preparation
         df3 = pipeline.data_preparation(df2)
-        print('6')
 
         # prediction
         df_response = pipeline.get_prediction(model, test_df, df3)
-        print('7')
 
         return df_response
 
