@@ -151,11 +151,8 @@ To maximize the chosen model, a hyperparameter fine-tuning was performed, by ran
 
 ## Algorithm Evaluation
 ### Business Performance
-Below, three main scenarios are compared:
 
-* Actual sum of sales of all stores during the 6 weeks
-* The sum of the sales in the scenario where the average sales of each store is generalized for 6 weeks (mean model)
-* The sum of sales predicted by the machine learning model
+Below, three main scenarios are compared, the actual sum of sales of all stores during the 6 weeks, the sum of the sales in the scenario where the average sales of each store is generalized for 6 weeks (mean model), and the sum of sales predicted by the machine learning model.
 
 | Sum of Sales      | Baseline (Mean Model) | ML Model      | 
 | ----------------- | --------------------- | ------------- |
