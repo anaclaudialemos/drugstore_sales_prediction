@@ -10,7 +10,7 @@ Rossmann is a chain of pharmacies that operates more than 3,000 stores in 7 Euro
 To find out how much can be invested in the renovation of each of the units, the CFO has requested a sales prediction for each of Rossmann's units for the next 6 weeks.   
 
 ## Business Results
-The model developed predicts a gross income of US$ 285,707,584.00 in the next 6 weeks for the stores available, where the best and worst case scenarios results on US$ 286,423,764.87 and US$ 284,991,409.31, respectively.
+The model developed predicts a gross income of 285,707,584.00 USD in the next 6 weeks for the stores available, where the best and worst case scenarios results on 286,423,764.87 USD and 284,991,409.31 USD, respectively.
 
 To make the predictions available online for CFO to access directly from their smartphone, the messaging application Telegram was used.
 In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the prediciton. You can access the Telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
