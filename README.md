@@ -73,7 +73,7 @@ The adopted solution is based on the CRISP-DM method (Cross Industry Standard Pr
 As can be seen from the topics above, part of this process has already been covered: the business problem, the business understanding, and the data collection -- which in this fictitious scenario is a .csv file from a Kaggle competition, but could be a company database, a set of spreadsheets, or other sources.
 
 ## Data Preprocessing
-### 5.1 Data Description 
+### Data Description 
 This step is important to understand how challenging the problem is in terms of computing power needed, types of variables and variable transformation needs, amount of missing data and techniques for filling them, and to have a notion of magnitudes and limits through basic statistics.
 
 ### Filling Missing Values
