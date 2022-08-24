@@ -10,7 +10,7 @@ Rossmann is a chain of pharmacies that operates more than 3,000 stores in 7 Euro
 To find out how much can be invested in the renovation of each of the units, the CFO has requested a sales prediction for each of Rossmann's units for the next 6 weeks.   
 
 ## Business Results
-The model developed predicts a gross income of US$ 285.71 MM in the next 6 weeks for the stores available, where the best and worst case scenarios results on US$ 286.42 MM and US$ 284.99 MM, respectively.
+The model developed predicts a gross income of US$ 285,707,584.00 in the next 6 weeks for the stores available, where the best and worst case scenarios results on US$ 286,423,764.87 and US$ 284,991,409.31, respectively.
 
 To make the predictions available online for CFO to access directly from their smartphone, the messaging application Telegram was used.
 In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the prediciton. You can access the Telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
@@ -156,7 +156,7 @@ Below, three main scenarios are compared, the actual sum of sales of all stores 
 
 | Sum of Sales      | Baseline (Mean Model) | ML Model      | 
 | ----------------- | --------------------- | ------------- |
-| 289.57 MM         | 324.61 MM             | 285.71 MM    	|
+| 289,571,750.00    | 324,608,344.45        |285,707,584.00 |
 
 The use of the ML model is justified when compared to using the average for projecting future revenue, since the model's deviation from the actual value was significantly lower than the baseline model (mean).
 
