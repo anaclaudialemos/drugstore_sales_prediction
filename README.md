@@ -112,7 +112,7 @@ At the end, to increase the predictive power of the algorithms by selecting the 
 
 ## Machine Learning Models
 ### Assumptions
-Given the business problem presented, it is a Regression problem since the response variable must be a real value (the value of sales for each store). To solve this problem, first, the mean was used, which is intended to serve as a baseline for comparing the performance of the algorithms.   
+Given the business problem presented, it is a Regression problem since the response variable must be a real value (the value of sales for each store). To solve this problem, first, the mean model was used, which is intended to serve as a baseline for comparing the performance of the algorithms.   
 
 Since it was not yet known whether the nature of the sales phenomenon is linear or non-linear, two linear and two non-linear algorithms were selected. The algorithms selected for the test were:
 
@@ -157,19 +157,19 @@ Below, three main scenarios are compared:
 
 | Sum of Sales      | Baseline (Mean Model) | ML Model      | 
 | ----------------- | --------------------- | ------------- |
-| 289.57 MM        	| 324.61 MM            	| 285.71 MM    	|
+| 289.57 MM         | 324.61 MM             | 285.71 MM    	|
 
 The use of the ML model is justified when compared to using the average for projecting future revenue, since the model's deviation from the actual value was significantly lower than the baseline model (mean).
 
 ### Possible Scenarios
 Based on the error calculated for the model, pessimistic and optimistic scenarios were drawn in order to give greater decision possibilities to the business team. Below are some examples of scenarios by store.
 
-| Store	| Sales	      | Predictions	| Worst Scenario | Best Scenario | MAE	   | MAPE |
-| ----- | ----------- | ----------- | -------------- | ------------- | ------- | ---- |
-|919	  | 207,192.00	| 205,646.70	| 205,203.00	   | 206,090.41    |443.71	 | 0.08 |
-|507	  | 312,512.00	| 316,332.44	| 315,625.98	   | 317,038.89	   |706.45	 | 0.09 |
-|316	  | 373,108.00	| 366,507.97	| 365,819.22	   | 367,196.71	   |688.74	 | 0.07 |
-|983	  | 303,509.00	| 316,542.09	| 315,700.63	   | 317,383.56	   |841.46	 | 0.11 |
+| Store	| Sales	      | Predictions	| Worst Scenario  | Best Scenario | MAE	   | MAPE |
+| ------ | ------------ | ------------ | --------------- | ------------- | -------- | ---- |
+|919	   | 207,192.00	| 205,646.70	| 205,203.00	   | 206,090.41    | 443.71	| 0.08 |
+|507	   | 312,512.00	| 316,332.44	| 315,625.98	   | 317,038.89	 | 706.45	| 0.09 |
+|316	   | 373,108.00	| 366,507.97	| 365,819.22	   | 367,196.71	 | 688.74	| 0.07 |
+|983	   | 303,509.00	| 316,542.09	| 315,700.63	   | 317,383.56	 | 841.46   | 0.11 |
 
 ### Model Performance
 An overview of the model's performance and the magnitude of its error can be seen in the chart below, where error_rate represents predictions divided by sales, and error represents sales minus predictions. 
