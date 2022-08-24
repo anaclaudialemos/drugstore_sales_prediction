@@ -1,25 +1,186 @@
-# Sales Predictions for a Drugstore Chain
-↻ UNDER CONSTRUCTION     
+# Sales Predictions for a Drugstore Chain 
+↻ README UNDER CONSTRUCTION 
 
+<p align="center"> <img src="images/rossmann.jpg"/> </p>
+   
 The data used is available on [Kaggle](https://www.kaggle.com/c/rossmann-store-sales). All additional information below is fictional.
 
 ## Business Problem
-Rossmann is a pharmacy chain that operates over 3,000 stores in 7 European countries. The stores are going to be renovated and the CFO needs to know how much can be invested in each one of them.    
-The Data Scientist was requested to develop a sales prediction mode that forecast the sales for the next 6 weeks for each store. Therefore, the telegram bot must return this sales prediction for the given store.    
+Rossmann is a chain of pharmacies that operates more than 3,000 stores in 7 European countries. The Rossmann CFO (Chief Financial Officer) wants to do a renovation in all of the chain's units with part of the units' revenues in the next 6 weeks.
+
+To find out how much can be invested in the renovation of each of the units, the CFO has requested a sales prediction for each of Rossmann's units for the next 6 weeks.   
+
+## Business Results
+The model developed predicts a gross income of US$ 285.71 MM in the next 6 weeks for the stores available, where the best and worst case scenarios results on US$ 286.42 MM and US$ 284.99 MM, respectively.
+
+To make the predictions available online for CFO to access directly from their smartphone, the messaging application Telegram was used.
+In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the forecast. You can access the telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
 
 ## Business Assumptions
-* The data available is only from 2013-01-01 to 2015-07-31.
-* Stores without information on distance from competitors are considered without competition nearby.
-* For stores with no information about when the competitor opened, it was assumed that either the store does not have a nearby competitor, or the store has a nearby competitor but it is not known when it opened.
+* Stores without information in `competition_distance` were considered to have no competition nearby.
+* For stores with no information in `competition_open_since_month` and `competition_open_since_year`, it was assumed that either the store does not have a nearby competitor, or the store has a nearby competitor but it is not known when that competitor opened.
+* For stores with no information in `promo2_since_week`, `promo2_since_year`, and `promo2_interval` were considered these are stores that did not participate in the promotion.
+
+<details>
+  <summary> Description of the variables in the original data set according to <a href="https://www.kaggle.com/c/rossmann-store-sales/data">Kaggle</a>.</summary><br>
+
+  Variable                         | Definition
+  -------------------------------- | ---------------------------------------------------------------------------------------------------
+  | `store`                        | unique ID for each store                                                                          |
+  | `days_of_week`                 | weekday, starting 1 as Monday                                                                     |
+  | `date`                         | date that the sales occurred                                                                      |
+  | `sales`                        | amount of products or services sold in one day                                                    |
+  | `customers`                    | number of customers                                                                               |
+  | `open`                         | whether the store was open (1) or closed (0)                                                      |
+  | `promo`                        | whether the store was participating on a promotion (1) or not (0)                                 |
+  | `sate_holiday`                 | whether it was a state holiday (a = public holiday, b = easter holiday, c = christmas) or not (0) |
+  | `store_type`                   | designates the store model as a, b, c or d                                                        |
+  | `assortment`                   | indicates the store assorment as: a = basic, b = extra, c = extended                              |
+  | `competition_distance`         | distance in meters to the nearest competitor store                                                |
+  | `competition_open_since_month` | the approximate month competitor was opened                                                       |
+  | `competition_open_since_year`  | the approximate year competitor was opened                                                        |
+  | `promo2`                       | wheter the store was participating on a consecutive promotion (1) or not (0)                      |
+  | `promo2_since_week`            | indicates the calendar week the store was participating in `promo2`                               |
+  | `promo2_since_year`            | indicates the year the store was participating in `promo2`                                        |
+  | `promo2_interval`              | indicates the intervals in which `promo2` started                                                 |
+  </details>
+ 
+<details>
+  <summary> Description of the variables created during the project development.</summary><br>
+
+  Variable                           | Definition
+  ---------------------------------- | -----------------------------------------------------------------------------------------
+  | `year`                           | year from date that the sales occurred                                                  |
+  | `month`                          | month from date that the sales occurred                                                 |
+  | `day`                            | day from date that the sales occurred                                                   |
+  | `week_of_year`                   | week of the year from date that the sales occurred (int type)                           |
+  | `year_week`                      | year and week from date that the sales occurred (object type)                           |
+  | `competition_open_since`         | concatenation of `competition_open_since_year` and `competition_open_since_month`       |
+  | `competition_open_timein_months` | calculates the time in months that competitor has been open based on the purchased date |
+  | `promo2_since`                   | concatenation of `promo2_since_year` and `promo2_since_week`                            |
+  | `promo2_since_timein_weeks`      | calculates the time in weeks that promotion began based on the purchased date           |
+  | `month_map`                      | month from date that the sales occurred as auxiliar feature                             |
+  | `is_promo2`                      | whether the purchase occurred during an active promo2 (1) or not (0)                    |
+</details><br>
 
 ## Solution Strategy
-1. Data Description
-2. Feature Engineering
-3. Data Filtering
-4. Exploratory Data Analysis
-5. Data Preparation
-6. Feature Selection
-7. Machine Learning Modeling
-8. Hyper Parameter Fine Tuning
-9. Model-to-Business Interpretation
-10. Model Deploy 
+The adopted solution strategy is based on the CRISP-DM method (Cross Industry Standard Process for Data Mining). This is a cyclical and flexible methodology for solving problems involving large volumes of data that enables the rapid delivery of value to the business teams. Below is an illustration of the main steps of the solution strategy.
+
+<p align="center"> <img width="600" src="images/crisp_dm_based_process.png"/> </p>
+
+As can be seen from the topics above, part of this process has already been covered: the business problem, the business understanding, and the data collection -- which in this fictitious scenario is a .csv file from a Kaggle competition, but could be a company database, a set of spreadsheets, or other sources.
+
+## Data Preprocessing
+#### Data Description 
+This step is important to understand how challenging the problem that is being solved, in terms of computing power needed, types of variables and variable transformation needs, amount of missing data and techniques for filling them, and to have a notion of magnitudes and limits through basic statistics. 
+
+#### Filling Missing Values
+For this step a set of business assumptions were made. For `competition_distance` it was assumed that the nearest competitor is so far away that there is no competitor, so to fill in this missing data, a value much higher than the maximum value in `competition_distance` was used. Stores with no information in `promo2_interval` were considered these be stores that did not participate in the promotion, so the null was replaced by zero.
+
+Already thinking about feature engineering, for `competition_open_since_month` that was null, the sale date of that row was copied to `competition_open_since_month`. There are some variables that we derive from the time that is very important for representing behavior. One of them is "for a certain event, how long ago is it that another event occurs or has occurred?". If a store don't have a close competitor, it has a certain amount of sales, when a close competition opens up, those sales tend to drop because the customers split up. When that competition matures, sales grow again, but they don't stay at the same level as before a competitor. The same reasoning applies to `competition_open_since_year`, `promo2_since_week` and `promo2_since_year` -- how long has the promotion been going on when this sale happening?
+
+#### Feature Engineering
+For feature engineering, a mind map was made of what could influence sales and thus derive some features and hypotheses to get data insights from the exploratory data analysis, as well as verify the importance of these features for the machine learning model. The derived variables and their meanings can be found in Business Assumptions topic.
+
+<p align="center"> <img width="700" src="images/mind_map.png"/> </p>
+
+#### Variable Filtering
+Finally, a variable filtering was performed, removing variables considered irrelevant to the project, such as the days on which the stores were closed. Furthermore, variables that would not be available at the time of the prediction, such as the number of customers, were excluded.
+
+## Exploratory Data Analysis
+Using the mind map, hypotheses were created to be validated in the exploratory analysis. The objective was to understand how the variables impact the sales phenomenon and what is the intensity of this impact, as well as to obtain insights about the business.
+Below are the top 3 insights obtained from the exploratory analysis, the rest can be found in the project notebook. 
+
+### Top 3 Data Insights
+1. Distance from competition does not have  a significant correlation with sales.
+<p align="center"> <img width="800" src="images/competition_distance.png"/> </p>
+
+2. Stores that besides continued and consecutive promotion, also are running another promotion, sell, on average, 41.70% more than stores that are running only the continued and consecutive promotion.
+<p align="center"> <img src="images/onepromo_vs_bothpromo.png"/> </p>
+
+3. In 2013 stores sold more in the second semester, but in 2014 they did not.
+<p align="center"> <img width="800" src="images/semesters.png"/> </p>
+
+## Data Modeling
+Since the learning of machine learning algorithms is facilitated with numerical data that are on the same scale, Rescaling, Encoding and Transformation techniques were applied to prepare the data:
+
+* Most of the numerical variable in the set do not have a normal distribution, rescaling methods were applied -- for variables with very strong outliers RobustScaler was used, while for the remaining variables Min-Max Scaler was used. For categorical variables Label Enconding was used.
+* Since the response variable, sales, does not have a normal distribution, in order to facilitate learning the algorithms, a logarithmic transformation was applied.
+* In order to respect the cyclical nature of time variables such as day, day of the week, week, and month, cyclical transformations of sine and cosine type were applied.
+
+At the end, to increase the predictive power of the algorithms by selecting the most critical variables and eliminating redundant and irrelevant variables, the Boruta algorithm was used. 
+
+## Machine Learning Models
+### Assumptions
+Given the business problem presented, it is a Regression problem since the response variable must be a real value (the value of sales for each store). To solve this problem, first, the mean was used, which is intended to serve as a baseline for comparing the performance of the algorithms.   
+
+Since it was not yet known whether the nature of the sales phenomenon is linear or non-linear, two linear and two non-linear algorithms were selected. The algorithms selected for the test were:
+
+* Linear Regressor
+* Regularized Linear Regressor (Lasso)
+* Random Forest Regressor
+* XGBoost Regressor
+
+### Time Series Cross Validation
+The algorithms were evaluated using the cross validation technique, which can be illustrated in the image below.
+
+<p align="center"> <img width="800" src="images/cross_validation.png"/> </p>
+
+From the whole available dataset, a small portion is separated for training and another small portion for validation, and then the performance is evaluated.
+
+In the next iteration, another portion of the data is used for training, composed of the training plus validation from the previous iteration, and another for validation that always has the same size. This is repeated successively, always respecting the chronology of the data, until the training and validation set represents the entire dataset.
+
+### Algorithm Performances
+
+By applying the Cross Validation Time Series technique to the chosen algorithms, the following results were obtained:
+
+| Model             | MAE                 | MAPE          | RMSE               |
+| ----------------- | ------------------- | ------------- | ------------------ |
+| Linear Regression	| 2040.76 +/- 267.47	| 0.30 +/- 0.01	| 2911.40 +/- 396.61 |
+| Lasso	            | 2388.68 +/- 398.48	| 0.34 +/- 0.01	| 3369.37 +/- 567.55 |
+| Random Forest	    |  837.18 +/- 220.28	| 0.12 +/- 0.02	| 1254.36 +/- 320.57 |
+| XGBooster	        | 1060.91 +/- 166.35	| 0.15 +/- 0.01	| 1532.42 +/- 227.07 |
+
+To decide the best model to use, the RMSE was used. The RMSE is quite rigid, giving greater weight to larger errors and being sensitive to outliers, which makes it a good metric for measuring model performance. 
+
+Although Random Forest and XGBoost performed better, the algorithm chosen for this first CRISP cycle was XGBoost. A Random Forest model can get very large, requiring a lot of space. This is just the nature of a Random Forest, because all the trained trees must be stored, with all their nodes. Considering that the company pays to store the models on servers, the little difference in performance may not offset the price of storage. 
+
+To maximize the performance of the chosen model, a hyperparameter fine-tuning was performed, by random search using some sample parameters.
+
+## Algorithm Evaluation
+### Business Performance
+Below, three main scenarios are compared:
+
+* Actual sum of sales of all stores during the 6 weeks
+* The sum of the sales in the scenario where the average sales of each store is generalized for 6 weeks (mean model)
+* The sum of sales predicted by the machine learning model
+
+| Sum of Sales      | Baseline (Mean Model) | ML Model      | 
+| ----------------- | --------------------- | ------------- |
+| 289.57 MM        	| 324.61 MM            	| 285.71 MM    	|
+
+The use of the ML model is justified when compared to using the average for projecting future revenue, since the model's deviation from the actual value was significantly lower than the baseline model (mean).
+
+### Possible Scenarios
+Based on the error calculated for the model, pessimistic and optimistic scenarios were drawn in order to give greater decision possibilities to the business team. Below are some examples of scenarios by store.
+
+| Store	| Sales	      | Predictions	| Worst Scenario | Best Scenario | MAE	   | MAPE |
+| ----- | ----------- | ----------- | -------------- | ------------- | ------- | ---- |
+|919	  | 207,192.00	| 205,646.70	| 205,203.00	   | 206,090.41    |443.71	 | 0.08 |
+|507	  | 312,512.00	| 316,332.44	| 315,625.98	   | 317,038.89	   |706.45	 | 0.09 |
+|316	  | 373,108.00	| 366,507.97	| 365,819.22	   | 367,196.71	   |688.74	 | 0.07 |
+|983	  | 303,509.00	| 316,542.09	| 315,700.63	   | 317,383.56	   |841.46	 | 0.11 |
+
+### Model Performance
+An overview of the model's performance and the magnitude of its error can be seen in the chart below, where error_rate represents predictions divided by sales, and error represents sales minus predictions. 
+
+<p align="center"> <img src="images/ml_performace.png"/> </p>
+
+## References
+* Introduction image from [Rosmann Media Library](https://unternehmen.rossmann.de/presse/mediathek.html).
+* Dataset and variables meaning from [Kaggle](https://www.kaggle.com/c/rossmann-store-sales/overview).
+* DS em Produção on [Comunidade DS](https://www.comunidadedatascience.com).
+ 
+#### 🤝 Contact me:
+[![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-black?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/anaclaudiarlemos//)](https://www.linkedin.com/in/anaclaudiarlemos/)
+[![Gmail Badge](https://img.shields.io/badge/-Gmail-black?style=flat-square&logo=Gmail&logoColor=white&link:rlemos.anaclaudia@gmail.com)](mailto:rlemos.anaclaudia@gmail.com)
