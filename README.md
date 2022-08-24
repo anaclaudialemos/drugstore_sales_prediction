@@ -1,5 +1,4 @@
 # Sales Predictions for a Drugstore Chain 
-↻ README UNDER CONSTRUCTION 
 
 <p align="center"> <img src="images/rossmann.jpg"/> </p>
    
@@ -14,18 +13,21 @@ To find out how much can be invested in the renovation of each of the units, the
 The model developed predicts a gross income of US$ 285.71 MM in the next 6 weeks for the stores available, where the best and worst case scenarios results on US$ 286.42 MM and US$ 284.99 MM, respectively.
 
 To make the predictions available online for CFO to access directly from their smartphone, the messaging application Telegram was used.
-In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the forecast. You can access the telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
+In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the prediciton. You can access the Telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
 
 ## Business Assumptions
+### Assumptions
 * Stores without information in `competition_distance` were considered to have no competition nearby.
 * For stores with no information in `competition_open_since_month` and `competition_open_since_year`, it was assumed that either the store does not have a nearby competitor, or the store has a nearby competitor but it is not known when that competitor opened.
 * For stores with no information in `promo2_since_week`, `promo2_since_year`, and `promo2_interval` were considered these are stores that did not participate in the promotion.
 
+### Data Dictionary
+
 <details>
   <summary> Description of the variables in the original data set according to <a href="https://www.kaggle.com/c/rossmann-store-sales/data">Kaggle</a>.</summary><br>
 
-  Variable                         | Definition
-  -------------------------------- | ---------------------------------------------------------------------------------------------------
+  | Variable                       | Definition
+  -------------------------------- | ------------------------------------------------------------------------------------------------- |
   | `store`                        | unique ID for each store                                                                          |
   | `days_of_week`                 | weekday, starting 1 as Monday                                                                     |
   | `date`                         | date that the sales occurred                                                                      |
@@ -44,12 +46,12 @@ In this application, the user must inform a bot created in Telegram of the ID of
   | `promo2_since_year`            | indicates the year the store was participating in `promo2`                                        |
   | `promo2_interval`              | indicates the intervals in which `promo2` started                                                 |
   </details>
- 
+  
 <details>
   <summary> Description of the variables created during the project development.</summary><br>
-
-  Variable                           | Definition
-  ---------------------------------- | -----------------------------------------------------------------------------------------
+  
+  | Variable                         | Definition
+  ---------------------------------- | --------------------------------------------------------------------------------------- |
   | `year`                           | year from date that the sales occurred                                                  |
   | `month`                          | month from date that the sales occurred                                                 |
   | `day`                            | day from date that the sales occurred                                                   |
@@ -64,27 +66,27 @@ In this application, the user must inform a bot created in Telegram of the ID of
 </details><br>
 
 ## Solution Strategy
-The adopted solution strategy is based on the CRISP-DM method (Cross Industry Standard Process for Data Mining). This is a cyclical and flexible methodology for solving problems involving large volumes of data that enables the rapid delivery of value to the business teams. Below is an illustration of the main steps of the solution strategy.
+The adopted solution is based on the CRISP-DM method (Cross Industry Standard Process for Data Mining), a cyclical and flexible methodology for solving problems involving large volumes of data that enables the rapid delivery of value to the business teams. Below is an illustration of the main steps of the solution.
 
 <p align="center"> <img width="600" src="images/crisp_dm_based_process.png"/> </p>
 
 As can be seen from the topics above, part of this process has already been covered: the business problem, the business understanding, and the data collection -- which in this fictitious scenario is a .csv file from a Kaggle competition, but could be a company database, a set of spreadsheets, or other sources.
 
 ## Data Preprocessing
-#### Data Description 
-This step is important to understand how challenging the problem that is being solved, in terms of computing power needed, types of variables and variable transformation needs, amount of missing data and techniques for filling them, and to have a notion of magnitudes and limits through basic statistics. 
+### 5.1 Data Description 
+This step is important to understand how challenging the problem is in terms of computing power needed, types of variables and variable transformation needs, amount of missing data and techniques for filling them, and to have a notion of magnitudes and limits through basic statistics.
 
-#### Filling Missing Values
-For this step a set of business assumptions were made. For `competition_distance` it was assumed that the nearest competitor is so far away that there is no competitor, so to fill in this missing data, a value much higher than the maximum value in `competition_distance` was used. Stores with no information in `promo2_interval` were considered these be stores that did not participate in the promotion, so the null was replaced by zero.
+### Filling Missing Values
+For this step a set of business assumptions were made (topic business assumptions). For `competition_distance` it was assumed that the nearest competitor is so far away that there is no competitor, so to fill in this missing data, a value much higher than the maximum value in `competition_distance` was used. Stores with no information in `promo2_interval` were considered these be stores that did not participate in the promotion, so the null was replaced by zero.
 
-Already thinking about feature engineering, for `competition_open_since_month` that was null, the sale date of that row was copied to `competition_open_since_month`. There are some variables that we derive from the time that is very important for representing behavior. One of them is "for a certain event, how long ago is it that another event occurs or has occurred?". If a store don't have a close competitor, it has a certain amount of sales, when a close competition opens up, those sales tend to drop because the customers split up. When that competition matures, sales grow again, but they don't stay at the same level as before a competitor. The same reasoning applies to `competition_open_since_year`, `promo2_since_week` and `promo2_since_year` -- how long has the promotion been going on when this sale happening?
+Already thinking about feature engineering, for `competition_open_since_month` that was null, the sale date of that row was copied to `competition_open_since_month`. There are some variables that we derive from the time that is very important for representing behavior. One of them is "for a certain event, how long ago is it that another event occurs or has occurred?". If a store don't have a close competitor, it has a certain amount of sales, when a close competition opens up, those sales tend to drop because the customers split up. When that competition matures, sales grow again but don't stay at the same level as before a competitor. The same reasoning applies to `competition_open_since_year`, `promo2_since_week`, and `promo2_since_year` -- how long has the promotion been going on when is the sale happening?
 
-#### Feature Engineering
+### Feature Engineering
 For feature engineering, a mind map was made of what could influence sales and thus derive some features and hypotheses to get data insights from the exploratory data analysis, as well as verify the importance of these features for the machine learning model. The derived variables and their meanings can be found in Business Assumptions topic.
 
 <p align="center"> <img width="700" src="images/mind_map.png"/> </p>
 
-#### Variable Filtering
+### Variable Filtering
 Finally, a variable filtering was performed, removing variables considered irrelevant to the project, such as the days on which the stores were closed. Furthermore, variables that would not be available at the time of the prediction, such as the number of customers, were excluded.
 
 ## Exploratory Data Analysis
@@ -99,7 +101,7 @@ Below are the top 3 insights obtained from the exploratory analysis, the rest ca
 <p align="center"> <img src="images/onepromo_vs_bothpromo.png"/> </p>
 
 3. In 2013 stores sold more in the second semester, but in 2014 they did not.
-<p align="center"> <img width="800" src="images/semesters.png"/> </p>
+<p align="center"> <img width="700" src="images/semesters.png"/> </p>
 
 ## Data Modeling
 Since the learning of machine learning algorithms is facilitated with numerical data that are on the same scale, Rescaling, Encoding and Transformation techniques were applied to prepare the data:
@@ -128,7 +130,7 @@ The algorithms were evaluated using the cross validation technique, which can be
 
 From the whole available dataset, a small portion is separated for training and another small portion for validation, and then the performance is evaluated.
 
-In the next iteration, another portion of the data is used for training, composed of the training plus validation from the previous iteration, and another for validation that always has the same size. This is repeated successively, always respecting the chronology of the data, until the training and validation set represents the entire dataset.
+In the next iteration, another portion of the data is used for training, composed of the training plus validation from the previous iteration, and another for validation that always has the same size. This is repeated successively, always respecting the chronology of the data, until the given number of iterations k.
 
 ### Algorithm Performances
 
@@ -136,16 +138,16 @@ By applying the Cross Validation Time Series technique to the chosen algorithms,
 
 | Model             | MAE                 | MAPE          | RMSE               |
 | ----------------- | ------------------- | ------------- | ------------------ |
-| Linear Regression	| 2040.76 +/- 267.47	| 0.30 +/- 0.01	| 2911.40 +/- 396.61 |
-| Lasso	            | 2388.68 +/- 398.48	| 0.34 +/- 0.01	| 3369.37 +/- 567.55 |
-| Random Forest	    |  837.18 +/- 220.28	| 0.12 +/- 0.02	| 1254.36 +/- 320.57 |
-| XGBooster	        | 1060.91 +/- 166.35	| 0.15 +/- 0.01	| 1532.42 +/- 227.07 |
+| Linear Regression | 2040.76 +/- 267.47	| 0.30 +/- 0.01 | 2911.40 +/- 396.61 |
+| Lasso	           | 2388.68 +/- 398.48	| 0.34 +/- 0.01 | 3369.37 +/- 567.55 |
+| Random Forest	  |  837.18 +/- 220.28	| 0.12 +/- 0.02 | 1254.36 +/- 320.57 |
+| XGBooster	        | 1060.91 +/- 166.35	| 0.15 +/- 0.01 | 1532.42 +/- 227.07 |
 
-To decide the best model to use, the RMSE was used. The RMSE is quite rigid, giving greater weight to larger errors and being sensitive to outliers, which makes it a good metric for measuring model performance. 
+To decide the best model to use, the RMSE (Root Mean Square Error) was used. The RMSE is quite rigid, giving greater weight to larger errors and being sensitive to outliers, which makes it a good metric for measuring model performance. 
 
 Although Random Forest and XGBoost performed better, the algorithm chosen for this first CRISP cycle was XGBoost. A Random Forest model can get very large, requiring a lot of space. This is just the nature of a Random Forest, because all the trained trees must be stored, with all their nodes. Considering that the company pays to store the models on servers, the little difference in performance may not offset the price of storage. 
 
-To maximize the performance of the chosen model, a hyperparameter fine-tuning was performed, by random search using some sample parameters.
+To maximize the chosen model, a hyperparameter fine-tuning was performed, by random search using some sample parameters.
 
 ## Algorithm Evaluation
 ### Business Performance
@@ -171,16 +173,39 @@ Based on the error calculated for the model, pessimistic and optimistic scenario
 |316	   | 373,108.00	| 366,507.97	| 365,819.22	   | 367,196.71	 | 688.74	| 0.07 |
 |983	   | 303,509.00	| 316,542.09	| 315,700.63	   | 317,383.56	 | 841.46   | 0.11 |
 
+The worst and best scenarios were calculated by taking the prediction value, subtracting, and adding the MAE value. The MAE (Mean Absolute Error) tells how much the predicted data is wrong compared to the real value, in an absolute perspective. In order hand, the MAPE (Mean Absolute Percentage Error) tells about this same difference, but from a percentage perspective.
+
 ### Model Performance
 An overview of the model's performance and the magnitude of its error can be seen in the chart below, where error_rate represents predictions divided by sales, and error represents sales minus predictions. 
 
 <p align="center"> <img src="images/ml_performace.png"/> </p>
 
+The error_rate is used to find non-random errors, especially of time-related effects. The error distribution is used to detect violation of the normality assumption. The error vs predictions - should show a random pattern of an error on either side of 0, if a point is far from most points, it may be an outlier value, and there should be no recognizable pattern in the error plot.
+
+## Model in Production
+With the model selected, trained and evaluated with a good performance, it was time to put it into production (model deployment). For this, it was decided to make the project predictions available online through the messaging application Telegram. In this application, the user must inform a bot created in Telegram the ID of the store to which he or she wants to get the sales prediction for the next 6 weeks. Thus, the bot will return a message with the prediction. 
+
+To accomplish this task, it was necessary to create two APIs, the **handler.py**, responsible for returning the sales prediction based on the store attributes, and the **rossmann_bot.py**, responsible for communicating with the end user, managing the welcome, error, and response messages to the prediction requests. To host these applications, Heroku was used. An illustration of the process is shown below.
+
+<p align="center"> <img width="700" src="images/schema_toget_prediction.png"/> </p>
+
+Once the user performs a query by entering the ID of the store to which they want the prediction, the file **rossmann_bot.py** loads the attributes data of the store that are in production, performs some treatments, and transforms it into json. 
+
+Based on this information the file **handler.py** loads the trained model, models the data and then performs the prediction. In response, the **handler.py** returns the same input dataset in json format plus an element that informs the sales prediction value for the requested store(s) and day(s).
+
+Finally, the **rossmann_bot.py** transforms this json, sums the predictions and informs the user through a message, the total value of the sales predictions for the next 6 weeks.
+
+## Telegram Bot
+At the end of the whole process we have the production model up and running. The Telegram bot can be accessed through this [link](https://www.t.me/rossmannACL_bot).
+<p align="center"> <img height="400" src="images/telegram_demo.gif"/> </p>
+
 ## References
 * Introduction image from [Rosmann Media Library](https://unternehmen.rossmann.de/presse/mediathek.html).
 * Dataset and variables meaning from [Kaggle](https://www.kaggle.com/c/rossmann-store-sales/overview).
 * DS em Produção on [Comunidade DS](https://www.comunidadedatascience.com).
- 
+* Illustration of data store on the topic model in production by Catkuro on [Flaticon](www.flaticon.com/free-icons/database).
+* Illustrations of the API's, trained model, data preparation and Telegram in the topic model in production by Kiranshastry on [Flaticon](www.flaticon.com/authors/kiranshastry).
+
 #### 🤝 Contact me:
 [![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-black?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/anaclaudiarlemos//)](https://www.linkedin.com/in/anaclaudiarlemos/)
 [![Gmail Badge](https://img.shields.io/badge/-Gmail-black?style=flat-square&logo=Gmail&logoColor=white&link:rlemos.anaclaudia@gmail.com)](mailto:rlemos.anaclaudia@gmail.com)
