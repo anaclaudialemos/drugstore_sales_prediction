@@ -12,8 +12,7 @@ To find out how much can be invested in the renovation of each of the units, the
 ## Business Results
 The model developed predicts a gross income of 285,707,584.00 USD in the next 6 weeks for the stores available, where the best and worst case scenarios results on 286,423,764.87 USD and 284,991,409.31 USD, respectively.
 
-To make the predictions available online for CFO to access directly from their smartphone, the messaging application Telegram was used.
-In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the prediciton. You can access the Telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
+To make the predictions available online, the messaging application Telegram was used. In this application, the user must inform a bot created in Telegram of the ID of the store for which he wants to get the sales prediction for the next 6 weeks. The bot will then return a message with the prediciton. You can access the Telegram bot below through this [link](https://www.t.me/rossmannACL_bot).
 
 ## Business Assumptions
 ### Assumptions
@@ -114,7 +113,7 @@ At the end, to increase the predictive power of the algorithms by selecting the 
 
 ## Machine Learning Models
 ### Assumptions
-Given the business problem presented, it is a Regression problem since the response variable must be a real value (the value of sales for each store). To solve this problem, first, the mean model was used, which is intended to serve as a baseline for comparing the performance of the algorithms.   
+Given the business problem presented, it is a regression problem since the response variable must be a real value (the value of sales for each store). To solve this problem, first, the mean model was used, which is intended to serve as a baseline for comparing the performance of the algorithms.   
 
 Since it was not yet known whether the nature of the sales phenomenon is linear or non-linear, two linear and two non-linear algorithms were selected. The algorithms selected for the test were:
 
@@ -133,7 +132,6 @@ From the whole available dataset, a small portion is separated for training and 
 In the next iteration, another portion of the data is used for training, composed of the training plus validation from the previous iteration, and another for validation that always has the same size. This is repeated successively, always respecting the chronology of the data, until the given number of iterations k.
 
 ### Algorithm Performances
-
 By applying the Cross Validation Time Series technique to the chosen algorithms, the following results were obtained:
 
 | Model             | MAE                 | MAPE          | RMSE               |
@@ -151,24 +149,23 @@ To maximize the chosen model, a hyperparameter fine-tuning was performed, by ran
 
 ## Algorithm Evaluation
 ### Business Performance
-
 Below, three main scenarios are compared, the actual sum of sales of all stores during the 6 weeks, the sum of the sales in the scenario where the average sales of each store is generalized for 6 weeks (mean model), and the sum of sales predicted by the machine learning model.
 
-| Sum of Sales      | Baseline (Mean Model) | ML Model      | 
-| ----------------- | --------------------- | ------------- |
-| 289,571,750.00    | 324,608,344.45        |285,707,584.00 |
+| Sum of Sales   | Baseline (Mean) | ML Model      |
+| -------------- | --------------- | ------------- |
+| 289,571,750.00 | 324,608,344.45  | 285,707,584.00|
 
 The use of the ML model is justified when compared to using the average for projecting future revenue, since the model's deviation from the actual value was significantly lower than the baseline model (mean).
 
 ### Possible Scenarios
 Based on the error calculated for the model, pessimistic and optimistic scenarios were drawn in order to give greater decision possibilities to the business team. Below are some examples of scenarios by store.
 
-| Store	| Sales	      | Predictions	| Worst Scenario  | Best Scenario | MAE	   | MAPE |
-| ------ | ------------ | ------------ | --------------- | ------------- | -------- | ---- |
-|919	   | 207,192.00	| 205,646.70	| 205,203.00	   | 206,090.41    | 443.71	| 0.08 |
-|507	   | 312,512.00	| 316,332.44	| 315,625.98	   | 317,038.89	 | 706.45	| 0.09 |
-|316	   | 373,108.00	| 366,507.97	| 365,819.22	   | 367,196.71	 | 688.74	| 0.07 |
-|983	   | 303,509.00	| 316,542.09	| 315,700.63	   | 317,383.56	 | 841.46   | 0.11 |
+| Store	| Sales	      | Predictions	| Worst      | Best       | MAE	  | MAPE 
+| ------ | ------------ | ------------ | ---------- | ---------- | ------ | ---- |
+| 919	   | 207,192.00	| 205,646.70	| 205,203.00 | 206,090.41 | 443.71 | 0.08 |
+| 507	   | 312,512.00	| 316,332.44	| 315,625.98 | 317,038.89 | 706.45 | 0.09 |
+| 316	   | 373,108.00	| 366,507.97	| 365,819.22 | 367,196.71 | 688.74 | 0.07 |
+| 983	   | 303,509.00	| 316,542.09	| 315,700.63 | 317,383.56 | 841.46 | 0.11 |
 
 The worst and best scenarios were calculated by taking the prediction value, subtracting, and adding the MAE value. The MAE (Mean Absolute Error) tells how much the predicted data is wrong compared to the real value, in an absolute perspective. In order hand, the MAPE (Mean Absolute Percentage Error) tells about this same difference, but from a percentage perspective.
 
