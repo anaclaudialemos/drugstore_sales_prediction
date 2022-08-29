@@ -1,4 +1,4 @@
-# Sales Predictions for a Drugstore Chain 
+# Sales Forecasts for a Drugstore Chain
 
 <p align="center"> <img src="images/rossmann.jpg"/> </p>
    
