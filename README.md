@@ -16,6 +16,7 @@ To make the predictions available online, the messaging application Telegram was
 
 ## Business Assumptions
 ### Assumptions
+* It was assumed that the currency is the dollar.
 * Stores without information in `competition_distance` were considered to have no competition nearby.
 * For stores with no information in `competition_open_since_month` and `competition_open_since_year`, it was assumed that either the store does not have a nearby competitor, or the store has a nearby competitor but it is not known when that competitor opened.
 * For stores with no information in `promo2_since_week`, `promo2_since_year`, and `promo2_interval` were considered these are stores that did not participate in the promotion.
