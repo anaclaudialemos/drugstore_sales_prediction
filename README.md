@@ -194,6 +194,22 @@ Finally, the **rossmann_bot.py** transforms this json, sums the predictions and 
 At the end of the whole process we have the production model up and running. The Telegram bot can be accessed through this [link](https://www.t.me/rossmannACL_bot).
 <p align="center"> <img height="400" src="images/telegram_demo.gif"/> </p>
 
+## Conclusions
+This project proposed to develop a complete Data Science solution using the CRISP-DM methodology, which was accomplished. Overall the machine learning model performed well in predicting the sales revenues of Rossmann stores up to 6 weeks in advance. 
+
+For the few stores that the model had a poor performance, i.e., stores with a behavior that is difficult to predict, it might be interesting to develop a specific machine learning model for them.
+
+In addition to the model, relevant information for the company was generated during the exploratory analysis. 
+
+## Next Steps
+Start a second cycle to analyze the problem looking for different approaches, especially for stores with behavior that is difficult to predict. Possible points to be addressed in the second cycle:
+
+* Working with the NA data in a different approach.
+* Rescaling and Encoding the data with different methodologies.
+* Work with new features for better prediction.
+* Work with a more robust method to find the best Hyper Parameters for the model.
+
+
 ## References
 * Introduction image from [Rosmann Media Library](https://unternehmen.rossmann.de/presse/mediathek.html).
 * Dataset and variables meaning from [Kaggle](https://www.kaggle.com/c/rossmann-store-sales/overview).
