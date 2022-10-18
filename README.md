@@ -94,7 +94,7 @@ Using the mind map, hypotheses were created to be validated in the exploratory a
 Below are the top 3 insights obtained from the exploratory analysis, the rest can be found in the project notebook. 
 
 ### Top 3 Data Insights
-1. Distance from competition does not have a strong correlation with sales.
+1. Distance from competitors does not have a strong influence on sales.
 <p align="center"> <img width="800" src="images/competition_distance.png"/> </p>
 
 2. Stores that besides continued and consecutive promotion, also are running another promotion, sell, on average, 41.70% more than stores that are running only the continued and consecutive promotion.
